@@ -11,6 +11,7 @@
 <h4>Class:</h4>
 <p>{{ class }}</p>
 
+
 <a href="{% url 'main:add_product' %}">
   <button>+ Add</button>
 </a>
@@ -19,6 +20,7 @@
   <button>Logout</button>
 </a>
 
+<h4>Currently logged in as : {{ username }}</h4>
 <h4>Last login session : {{ last_login }}</h4>
 
 <hr>
