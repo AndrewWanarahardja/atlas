@@ -18,8 +18,10 @@ def show_main(request):
 
     if filter_type == "all":
         product_list = Products.objects.all()
-    else:
+    elif filter_type == "my":
         product_list = Products.objects.filter(user=request.user)
+    else :
+        product_list = Products.objects.filter(is_featured=True)
 
     context = {
         'title' : 'ATLAS',
