@@ -123,3 +123,35 @@ Soal Tugas 4 :
 
     d. Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last_login pada halaman utama aplikasi.
         Penampilan username dan informasi last_login bisa dilakukan dengan modifikasi pada view.py pada direktori main. Data tentang username bisa didapatkan dengan request.user.username. Sedangkan data untuk waktu terakhir login bisa dilakukan dengan mengambil timestamp sebagai cookie setiap kali dilakukan login. Dilakukan penambahan username dan last_login pada dictionary, pada show_main (fungsi yang menampilkan halaman utama). Setelah itu dilakukan penambahan pada main.html yang menampilkan perubahan tersebut
+
+---------------------------------------------------------------------------------------------
+
+Soal tugas 5:
+1. Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+    CSS selector bisa memformat beberapa hal seprti warna dan ukuran. CSS selector ada berbagai jenisnya, dan ada kemungkinan suatu baris terpilih oleh lebih dari satu selector. Oleh karena itu maka perlu terdapat prioritas untuk jenis selector tertentu agar menghindari kebingungan pemilihan selector. Yang paling di prioritaskan adalah inline selector, yaitu selector yang ditulis secara langsung pada baris tersebut seperti <button class="text-gray bg-white">, setelah itu adalah ID selector, yang ditulis secara terpisah seperti #h1 {color: #000000}. lalu class selector, attribute selector, dan pseudo-classes. Dengan prioritas paling rendah adalah element selectors dan pseudo-elements
+2. Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
+    responsive design penting karena orang menggunakan device yang berbeda-beda dengan ukuran yang beragam. Maka, responsive design penting untuk menjaga presentabilitas website yang dibuat dalam berbagai ukuran device yang berbeda. contoh yang belum menerapkan responsive design adalah proyek ini sebelum ada base.html. dan contoh yang menggunakan responsive design adalah proyek ini setelah adanya base.html. sebelum tugas 5, belum ada bagian <meta name="viewport" content="width=device-width, initial-scale=1.0" />, setelah base.html di extends oleh semua page html, maka responsive design akan berlaku auntuk setiap halaman.
+3. Jelaskan perbedaan antara margin, border, dan padding, serta cara untuk mengimplementasikan ketiga hal tersebut!
+    padding : jarak benda ke border -> <button class="px-3 py-2"> 2 to the sides, 3 top and bottom
+    border : batas luar benda -> <div class="border border-gray-900"> nearly black border
+    margin : jarak border ke border lain atau batas terluar -> <... class="space-y-6"> 6px y margin 
+
+4. Jelaskan konsep flex box dan grid layout beserta kegunaannya!
+    flex box dan grid adalah layout, cara penempatan benda di website. flex box berbentuk baris atau kolom. sedangkan grid berbentuk seperti seperti segi 4 yang disusun ke samping dan ke atas. keduanya berguna untuk menata penempatan benda di website, hanya saja grid untuk menata benda dalam suatu kolom atau baris, sedangkan grid secara 2 dimensi
+
+5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step (bukan hanya sekadar mengikuti tutorial)!
+    Implementasikan fungsi untuk menghapus dan mengedit product.
+        Seperti biasa, untuk mengimplemetasi suatu fungsi pada django, dibuat fungsi untuk edit dan delete produk, lalu buat html file yang ingin ditampilkan ketika melakukan edit ataupun delete, dan terakhir melakukan routing dengan manambahkan path pada urls.py pada direktori main
+
+    Kustomisasi desain pada template HTML yang telah dibuat pada tugas-tugas sebelumnya menggunakan CSS atau CSS framework (seperti Bootstrap, Tailwind, Bulma) dengan ketentuan sebagai berikut:
+        Kustomisasi halaman login, register, tambah product, edit product, dan detail product semenarik mungkin.
+            banyak hal yang bisa dilakukan, saya mengganti berbagai warna dan mengganti banckground dengan gambar. semua dilkukan pada file html masing masing. Selain itu, saya juga menambahkan tombol yang melakukan filter untuk menampilkan hanya yang featured
+        Kustomisasi halaman daftar product menjadi lebih menarik dan responsive. Kemudian, perhatikan kondisi berikut:
+            Jika pada aplikasi belum ada product yang tersimpan, halaman daftar product akan menampilkan gambar dan pesan bahwa belum ada product yang terdaftar.
+                Saya lakukan dengan mendownload sebuah gambar, lalu menyimpannya di direktori static/images. dengan adanya load static pada awal halaman html main, gambarnya saya letakkan 
+            Jika sudah ada product yang tersimpan, halaman daftar product akan menampilkan detail setiap product dengan menggunakan card (tidak boleh sama persis dengan desain pada Tutorial!).
+                Perubahan yang saya lakukan terdapat pada perubahan warna dan pembuatan tombol pada card
+            Untuk setiap card product, buatlah dua buah button untuk mengedit dan menghapus product pada card tersebut!
+                bisa dilakukan dengan <button class="<customization apapun>"> button_text </button>
+            Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.
+                bisa dilakukan dengan membuat navbar.html pada templates, lalu include di halaman main untuk menambahkan nvabar pada halaman utama. pada navbar terdapat link ke halaman utama (home) dan ke halaman penambahan produk. dalamnya harus ada link yang akan redirect ke halaman tersebut. Selain itu, tampilan untuk mobile dan desktop juga akan berbeda, maka harus di buat format untuk keduanya 

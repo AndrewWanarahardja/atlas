@@ -6,21 +6,20 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
+<div class="bg-cover w-full min-h-screen"
+  style="background-image: url('https://i.pinimg.com/originals/20/68/14/206814ee99986c18cee8aff751ac12f4.jpg')">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
-        <!-- Back Navigation -->
-        <div class="mb-6">
-            <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-                ← Back to Main menu
-            </a>
-        </div>
         
         <!-- Article -->
         <article class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-            
             <!-- Header -->
             <div class="p-6 sm:p-8">
+                <!-- Back Navigation -->
+                <div class="mb-6">
+                    <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                        ← Back to Main menu
+                    </a>
+                </div>
                 <div class="flex flex-wrap items-center gap-2 mb-4">
                     <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white">
                         {{ product.get_category_display }}
