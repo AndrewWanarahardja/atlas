@@ -15,10 +15,6 @@
     <p class="text-gray-100">Stay updated with the latest products and interesting maps</p>
   </div>
   <div class=" bg-gradient-to-b from-cyan-900 via-black to-cyan-900 mx-8 my-3 px-4 sm:px-6 lg:px-6 py-8 rounded">
-    <!-- Button to open modal -->
-    <button onclick="showModal()" class="inline-flex items-center px-4 py-2 bg-white text-yellow-600 font-semibold outline outline-2 outline-yellow-600 outline-offset-[-2px] rounded-md hover:bg-yellow-600 hover:text-white transition-colors mb-4">
-      Add Products by AJAX
-    </button>
 
     <!-- Filter Section -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 bg-white rounded-lg border border-gray-200 p-4">
@@ -32,7 +28,6 @@
         <a id="filter-featured" class="{% if request.GET.filter == 'featured' %} bg-green-600 text-white{% else %}bg-white text-gray-700 border border-gray-300{% endif %} px-4 py-2 rounded-md font-medium transition-colors hover:bg-green-600 hover:text-white mb-4">
           Featured
         </a>
-        <button onclick="showConfirmModal()">Shazam!</button>
       </div>
       {% if user.is_authenticated %}
         <div class="text-sm text-gray-500 flex justify-right py-2">
@@ -86,10 +81,9 @@ const productGridContainer = document.getElementById('grid');
 const showAllProductsButton = document.getElementById('filter-all');
 const showMyProductsButton = document.getElementById('filter-my');
 const showFeaturedButton = document.getElementById('filter-featured');
-const deleteButton = document.getElementsByClassName('deleteProduct');
 const refresh = document.getElementById('refresh');
 const confirmDelete = document.getElementById('confirmDelete');
-console.log('confirmDelete element:', confirmDelete);
+const submitEdit = document.getElementById('submitEdit');
 
 // State Variables
 let activeFilter = 'all';
@@ -172,7 +166,7 @@ function buildProductCardElement(product) {
 
   const editDeleteButtons = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(product.user_id)
     ? `<div class='flex space-x-2'>
-        <a href='${editLink}' class='button bg-white hover:bg-gray-200 text-gray-900 text-sm transition-colors px-3 py-2 rounded'>Edit</a>
+        <button data-id='${product.id}' class=' editProduct button bg-white hover:bg-gray-200 text-black text-sm transition-colors px-3 py-2 rounded onclick="showEditModal()"'>Edit</button>
         <button data-id='${product.id}' class=' deleteProduct button bg-red-600 hover:bg-red-700 text-white hover:text-gray-100 text-sm transition-colors px-3 py-2 rounded onclick="showConfirmModal()"'>Delete</button>
       </div>`
     : '';
@@ -218,6 +212,7 @@ function renderAllProductCards(products) {
   });
 
   attachDeleteEventListeners();
+  attachEditEventListeners();
 }
 
 // Filter and display products
@@ -261,33 +256,7 @@ async function fetchProductFromServer() {
   }
 }
 
-// function attachDeleteEventListeners() {
-//   document.querySelectorAll('.deleteProduct').forEach(button => {
-//     button.addEventListener('click', async function(event) {
-//       event.preventDefault();
-//       const productId = this.getAttribute('data-id');
-//       const confirmed = confirm("Are you sure you want to delete this product?");
-//       if (!confirmed) return;
 
-//       try {
-//         const response = await fetch(`/delete-product-ajax/${productId}/`, {
-//           method: 'POST'
-//         });
-
-//         if (response.ok) {
-//           // Re-fetch products to refresh the grid
-//           showToast('Product deleted', '', 'error')
-//           fetchProductFromServer();
-//         } else {
-//           alert("Failed to delete product.");
-//         }
-//       } catch (error) {
-//         console.error("Error deleting product:", error);
-//         alert("Error deleting product.");
-//       }
-//     });
-//   });
-// }
 let productId = null;
 function attachDeleteEventListeners() {
   document.querySelectorAll('.deleteProduct').forEach(button => {
@@ -298,8 +267,6 @@ function attachDeleteEventListeners() {
     });
   });
 }
-
-
 
 confirmDelete.addEventListener('click', async function(event) {
   event.preventDefault();
@@ -322,6 +289,52 @@ confirmDelete.addEventListener('click', async function(event) {
     alert("Error deleting product.");
   } finally {
     hideConfirmModal();
+    productId = null;
+  }
+})
+
+function attachEditEventListeners() {
+  document.querySelectorAll('.editProduct').forEach(button => {
+    button.addEventListener('click', async function(event) {
+      event.preventDefault();
+      productId = this.getAttribute('data-id');
+
+      const response = await fetch(`/get-product-ajax/${productId}`);
+      const product = await response.json();
+
+      document.getElementById('editTitle').value = product.title;
+      document.getElementById('editPrice').value = product.price;
+      document.getElementById('editDescription').value = product.description;
+      document.getElementById('editCategory').value = product.category;
+      document.getElementById('editThumbnail').value = product.thumbnail;
+      document.getElementById('edit_is_featured').value = product.is_featured;
+      showEditModal();
+    })
+  })
+}
+
+submitEdit.addEventListener('click', async function (event) {
+  event.preventDefault();
+  if(!productId) return;
+  try{
+    const form = document.getElementById('productEditForm');
+    const formData = new FormData(form);
+    const response = await fetch(`/edit-product-ajax/${productId}`, {
+      method: 'POST',
+      body: formData
+    })
+
+    if (response.ok) {
+      showToast('Product Edited','','success');
+      fetchProductFromServer();
+    } else {
+      alert('failed to edit product');
+    }
+  } catch (error) {
+    console.error("Error editing product:", error);
+    alert("Error editing product.");
+  } finally {
+    hideEditModal();
     productId = null;
   }
 })

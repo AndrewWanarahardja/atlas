@@ -11,7 +11,7 @@ import datetime
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.utils.html import strip_tags
 
 # Create your views here.
@@ -119,7 +119,7 @@ def show_json_by_id(request, product_id):
             'category' : product.category,
             'thumbnail' : product.thumbnail,
             'product_views' : product.product_views,
-            'created_at' : product.created_ati.soformat() if product.created_at else None,
+            'created_at' : product.created_at.isoformat() if product.created_at else None,
             'is_featured' : product.is_featured,
             'user_id' : product.user_id,
             'user_username': product.user.username if product.user_id else None,
@@ -211,5 +211,39 @@ def delete_product_entry_ajax(request, product_id):
         product = Products.objects.get(id=product_id, user=request.user)
         product.delete()
         return JsonResponse({'success': True})
+    except Products.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
+    
+@csrf_exempt
+@require_GET
+def get_product_entry_ajax(request, product_id):
+    try:
+        product = Products.objects.get(pk=product_id)
+        return JsonResponse({
+            'title': product.title,
+            'price': product.price,
+            'description': product.description,
+            'category': product.category,
+            'thumbnail': product.thumbnail,
+            'is_featured': product.is_featured,
+        })
+    except Products.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
+    
+@csrf_exempt
+@require_POST
+def edit_product_entry_ajax(request, product_id):
+    try:
+        product = Products.objects.get(pk=product_id)
+        product.title = strip_tags(request.POST.get("title", product.title))
+        product.price = strip_tags(request.POST.get("price", product.price))
+        product.description = strip_tags(request.POST.get("description", product.description))
+        product.category = request.POST.get("category", product.category)
+        product.thumbnail = request.POST.get("thumbnail", product.thumbnail)
+        product.is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
+
+        product.save()
+        return JsonResponse({'success': True})
+        
     except Products.DoesNotExist:
         return JsonResponse({'error': 'Product not found'}, status=404)
