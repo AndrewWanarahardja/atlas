@@ -205,10 +205,11 @@ def add_product_entry_ajax(request):
 
 @require_POST
 @login_required
+@csrf_exempt
 def delete_product_entry_ajax(request, product_id):
     try:
         product = Products.objects.get(id=product_id, user=request.user)
         product.delete()
-        return JsonResponse({'status': 'success'})
+        return JsonResponse({'success': True})
     except Products.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': 'Product not found'}, status=404)
+        return JsonResponse({'error': 'Product not found'}, status=404)
