@@ -155,3 +155,16 @@ Soal tugas 5:
                 bisa dilakukan dengan <button class="<customization apapun>"> button_text </button>
             Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.
                 bisa dilakukan dengan membuat navbar.html pada templates, lalu include di halaman main untuk menambahkan nvabar pada halaman utama. pada navbar terdapat link ke halaman utama (home) dan ke halaman penambahan produk. dalamnya harus ada link yang akan redirect ke halaman tersebut. Selain itu, tampilan untuk mobile dan desktop juga akan berbeda, maka harus di buat format untuk keduanya 
+
+------------------------------------------------------------------------------------------------------------------------
+
+Soal tugas 6:
+1. Apa perbedaan antara synchronous request dan asynchronous request?
+    synchronous request akan mengupdate seluruh bagian website secara ebrsamaa sedangkan asynchronous bisa mengupdate sebagian dari website saja. 
+2. Bagaimana AJAX bekerja di Django (alur request–response)?
+    AJAX mengirim http request, server memproses request server membuat response, server mengembalikan response, response diproses oleh javascript dan ditampilkan
+3. Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
+
+4. Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
+
+5. Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
