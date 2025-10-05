@@ -136,6 +136,9 @@
       <button type="submit" id="submitEdit" form="productEditForm" class="order-1 sm:order-2 flex-1 bg-cyan-500 text-white px-6 py-3 rounded-md font-medium hover:bg-cyan-700 transition-colors">Edit product</button>
     </div>
   </div>
+  <div id="read">
+
+  </div>
   <!-- Modal footer -->
 </div>
 
@@ -223,7 +226,7 @@
         
     // Show toast notification
     showToast('Product added successfully!', '', 'success');
-
+    console.log('here');
     // Dispatch custom event to notify main.html about new data
     document.dispatchEvent(new CustomEvent('productAdded'));
 

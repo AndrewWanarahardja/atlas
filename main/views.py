@@ -14,6 +14,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_GET
 from django.utils.html import strip_tags
 
+import json
+from django.contrib.auth.models import User
+
 # Create your views here.
 @login_required(login_url='/login')
 def show_main(request):
@@ -247,3 +250,31 @@ def edit_product_entry_ajax(request, product_id):
         
     except Products.DoesNotExist:
         return JsonResponse({'error': 'Product not found'}, status=404)
+
+@csrf_exempt
+@require_POST
+def login_ajax(request):
+    username = strip_tags(request.POST.get('username'))
+    password = strip_tags(request.POST.get('password'))
+
+    user = authenticate(request, username=username, password=password)
+    if(user != None):
+        login(request, user)
+        return JsonResponse({'success': 'Successfully logged in', 'redirect':'/'}, status=200)
+    else:
+        return JsonResponse({'error': 'incorrect username or password', 'redirect':"/login"}, status=401)
+    
+@csrf_exempt
+@require_POST
+def register_ajax(request):
+    data = json.loads(request.body)
+    username = strip_tags(data.get('username'))
+    password = strip_tags(data.get('password'))
+    confirmPassword = strip_tags(data.get('password'))
+
+    if (password != confirmPassword):
+        return JsonResponse({'error': 'confirm your password'}, status=400)
+    elif (User.objects.filter(username=username).exists()):
+        return JsonResponse({'error': 'username already exists'}, status=400)
+    else:
+        return JsonResponse({'success': 'successfully registered', 'redirect':'login-ajax/'}, status=200)
