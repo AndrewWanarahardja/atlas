@@ -260,7 +260,9 @@ def login_ajax(request):
     user = authenticate(request, username=username, password=password)
     if(user != None):
         login(request, user)
-        return JsonResponse({'success': 'Successfully logged in', 'redirect':'/'}, status=200)
+        response = JsonResponse({'success': 'Successfully logged in', 'redirect':'/'}, status=200)
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
     else:
         return JsonResponse({'error': 'incorrect username or password', 'redirect':"/login"}, status=401)
     
@@ -279,3 +281,10 @@ def register_ajax(request):
         user = User.objects.create_user(username=username, password=password)
         user.save()
         return JsonResponse({'success': 'Successfully registered', 'redirect':'/login'}, status=200)
+
+@csrf_exempt   
+def logout_ajax(request):
+    logout(request)
+    response = JsonResponse({'success' : 'Successful logout', 'redirect': '/login'}, status=200)
+    response.delete_cookie('last_login')
+    return response

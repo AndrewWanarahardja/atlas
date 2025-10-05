@@ -164,7 +164,8 @@ Soal tugas 6:
 2. Bagaimana AJAX bekerja di Django (alur request–response)?
     AJAX mengirim http request, server memproses request server membuat response, server mengembalikan response, response diproses oleh javascript dan ditampilkan
 3. Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?
-
+    jika ingin merender objek baru tidak harus semua objek lainnya di-render ulang juga, jadi meringankan beban komputer.
 4. Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?
-
+    keamanan sangat sulit untuk dipastikan, tapi ada banyak cara yang bisa membantu memperbaiki keamanan sebuah situs. Dalam proyek ini, yang dilakukan adalah untuk melakukan strip_tags pada hasil input pada form saat melakukan login dan register. hal ini menghilangkan tag yang bisa dimasukkan pada input form. tanpanya, tag yang dimasukkan bisa mempengaruhi berjalannya situs.
 5. Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?
+    mengurangi keperluan untuk refresh saat adanya penambahan objek
