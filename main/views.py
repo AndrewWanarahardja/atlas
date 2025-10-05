@@ -267,14 +267,15 @@ def login_ajax(request):
 @csrf_exempt
 @require_POST
 def register_ajax(request):
-    data = json.loads(request.body)
-    username = strip_tags(data.get('username'))
-    password = strip_tags(data.get('password'))
-    confirmPassword = strip_tags(data.get('password'))
+    username = strip_tags(request.POST.get('username'))
+    password = strip_tags(request.POST.get('password1'))
+    confirmPassword = strip_tags(request.POST.get('password2'))
 
     if (password != confirmPassword):
-        return JsonResponse({'error': 'confirm your password'}, status=400)
+        return JsonResponse({'error': 'Confirm your password', 'redirect':'/register'}, status=400)
     elif (User.objects.filter(username=username).exists()):
-        return JsonResponse({'error': 'username already exists'}, status=400)
+        return JsonResponse({'error': 'Username already exists', 'redirect':'/register'}, status=400)
     else:
-        return JsonResponse({'success': 'successfully registered', 'redirect':'login-ajax/'}, status=200)
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+        return JsonResponse({'success': 'Successfully registered', 'redirect':'/login'}, status=200)

@@ -76,7 +76,7 @@
             placeholder="Confirm your password">
         </div>
 
-        <button 
+        <button id="submit"
           type="submit" 
           class="w-full bg-cyan-500 text-white font-medium py-3 px-4 rounded hover:bg-cyan-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200">
           Create Account
@@ -116,4 +116,41 @@
     </div>
   </div>
 </div>
+
+<script>
+  const form = document.querySelector('form')
+  const submitButton = document.getElementById('submit');
+
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    try {
+      const formData = new FormData(form);
+  
+      const response = await fetch("{% url 'main:register-ajax' %}", {
+        method: "POST",
+        body: formData
+      })
+  
+      const data = await response.json();
+  
+      if (data.success =='Successfully registered') {
+        showToast('Registered an account successfully!','','success');
+        setTimeout(() => {
+          window.location.href = data.redirect;
+        }, 3000);
+      } else {
+        showToast(data.error,'','error');
+        setTimeout(() => {
+          window.location.href = data.redirect;
+        }, 3000);
+        // console.log(data.error);
+        // alert(data.error || "Login failed");
+      }
+    } catch(error) {
+      console.error("Error logging in:", error);
+      alert("An error occurred during login");
+    }
+  })
+</script>
 {% endblock content %}
