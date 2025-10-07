@@ -243,7 +243,7 @@ def edit_product_entry_ajax(request, product_id):
         product.description = strip_tags(request.POST.get("description", product.description))
         product.category = request.POST.get("category", product.category)
         product.thumbnail = request.POST.get("thumbnail", product.thumbnail)
-        product.is_featured = request.POST.get("is_featured") == 'on'  # checkbox handling
+        product.is_featured = request.POST.get("is_featured", product.is_featured) == 'on'  # checkbox handling
 
         product.save()
         return JsonResponse({'success': True})
